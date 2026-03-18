@@ -1,0 +1,30 @@
+{
+  "name": "google-chat",
+  "productName": "Google Chat",
+  "version": "1.0.0",
+  "description": "Google Chat desktop app",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder --mac"
+  },
+  "build": {
+    "appId": "com.google.chat.desktop",
+    "productName": "Google Chat",
+    "afterPack": "./afterpack.js",
+    "mac": {
+      "category": "public.app-category.productivity",
+      "icon": "icon.icns",
+      "target": [{ "target": "dmg", "arch": ["arm64", "x64"] }],
+      "darkModeSupport": true,
+      "identity": null
+    },
+    "dmg": {
+      "title": "Google Chat"
+    }
+  },
+  "devDependencies": {
+    "electron": "^33.0.0",
+    "electron-builder": "^25.0.0"
+  }
+}
