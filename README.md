@@ -1,76 +1,88 @@
-# Google Chat – desktopová aplikace pro macOS
+# 💬 Google Chat – Desktop App for macOS
 
-Neoficiální nativní desktopová aplikace Google Chat postavená na [Electron](https://www.electronjs.org/). Oproti prohlížeči přináší plnohodnotnou integraci s macOS.
+> Unofficial native macOS desktop app for Google Chat, built with [Electron](https://www.electronjs.org/).
+> Get proper macOS integration that the browser tab simply can't offer.
 
-## Funkce
+---
 
-- **Dock badge** – červený odznak s počtem nepřečtených zpráv
-- **Nativní notifikace** – systémová oznámení macOS (Centrum oznámení)
-- **Single instance** – aplikace se nespustí víckrát, druhý pokus vyvolá okno
-- **Správné chování odkazů** – externí odkazy se otevírají v prohlížeči, nikoli v aplikaci
-- **Podpora Dark Mode**
+## ✨ Features
 
-## Instalace
+- 🔴 **Dock badge** – unread message count shown right on the app icon
+- 🔔 **Native notifications** – system notifications via macOS Notification Center
+- 🪟 **Single instance** – launching the app twice just brings the window to front
+- 🔗 **Smart link handling** – external links open in your browser, not inside the app
+- 🌙 **Dark Mode support**
 
-1. Stáhni `Google Chat Installer.dmg` ze sekce [Releases](../../releases)
-2. Otevři DMG a spusť **Instalovat Google Chat.command** (dvojklik)
-3. V Terminálu, který se otevře, sleduj postup instalace – aplikace se nainstaluje do `/Applications` a rovnou spustí
+---
 
-> **Poznámka k prvnímu spuštění:** macOS se může zeptat na povolení notifikací – potvrď je, jinak badge a oznámení nebudou fungovat.
+## 📦 Installation
 
-## Proč instalátor odstraňuje quarantine?
+1. Download `Google Chat Installer.dmg` from [Releases](../../releases)
+2. Open the DMG and double-click **Instalovat Google Chat.command**
+3. A Terminal window will guide you through the install – the app will land in `/Applications` and launch automatically
 
-Při stažení jakéhokoli souboru z internetu macOS automaticky přiřadí tzv. **quarantine atribut** (`com.apple.quarantine`). Jde o bezpečnostní mechanismus zvaný **Gatekeeper**, který chrání uživatele před spuštěním neznámého softwaru.
+> **💡 First launch tip:** macOS will ask for notification permission – make sure to allow it, otherwise badges and notifications won't work.
 
-Aplikace distribuované mimo Mac App Store musí být buď:
-- **podepsané Apple Developer certifikátem** (placené členství ~99 $/rok), nebo
-- **zbavené quarantine atributu** ručně
+---
 
-Instalátor proto spouští příkaz:
+## 🔐 Why does the installer remove quarantine?
+
+When you download any file from the internet, macOS automatically tags it with a **quarantine attribute** (`com.apple.quarantine`). This is a security feature called **Gatekeeper** that prevents unknown software from running without your explicit consent.
+
+Apps distributed outside the Mac App Store must be either:
+- ✅ **Signed with an Apple Developer certificate** (~$99/year membership), or
+- ✅ **Stripped of the quarantine attribute** manually
+
+The installer runs this single command:
 
 ```bash
 xattr -cr "/Applications/Google Chat.app"
 ```
 
-Tento příkaz odstraní quarantine atribut z aplikace – nic jiného nedělá. Jedná se o standardní postup pro interní firemní nástroje a open-source aplikace bez certifikátu.
+That's all it does – removes the quarantine flag. This is standard practice for internal tools and open-source apps distributed without an Apple certificate.
 
-**Jak si to ověřit sám:**
+**🔍 Want to verify it yourself?**
+
 ```bash
-# Před instalací – uvidíš atribut com.apple.quarantine
+# Before install – you'll see com.apple.quarantine listed
 xattr -l "/Applications/Google Chat.app"
 
-# Po instalaci – atribut zmizí
+# After install – the attribute is gone
 xattr -l "/Applications/Google Chat.app"
 ```
 
-Celý zdrojový kód aplikace i instalátoru je dostupný v tomto repozitáři k prostudování.
+The full source code of both the app and the installer is available in this repository for your review.
 
-## Build ze zdrojových kódů
+---
 
-Potřebuješ: **Node.js 18+**
+## 🛠 Build from source
+
+**Requirements:** Node.js 18+
 
 ```bash
-git clone https://github.com/<org>/google-chat-app.git
+git clone https://github.com/trnkapavel/google-chat-app.git
 cd google-chat-app
 npm install
 
-# Spustit vývojově
+# Run in development
 npm start
 
-# Sestavit DMG (arm64 + x64)
+# Build DMG (arm64 + x64)
 npm run build
 
-# Zabalit do instalačního DMG
+# Package into installer DMG
 ./build_dmg.sh
 ```
 
-Výstupní soubor bude v `dist/Google Chat Installer.dmg`.
+Output: `dist/Google Chat Installer.dmg`
 
-## Technické detaily
+---
 
-| Položka | Hodnota |
+## 🔧 Technical details
+
+| | |
 |---|---|
 | Electron | 33.x |
-| Cílová platforma | macOS (arm64 + x64) |
-| Podpis | ad-hoc (`--sign -`) |
+| Platform | macOS (Apple Silicon + Intel) |
+| Code signing | ad-hoc (`--sign -`) |
 | Bundle ID | `com.google.chat.desktop` |
