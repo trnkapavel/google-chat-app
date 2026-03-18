@@ -86,3 +86,95 @@ Output: `dist/Google Chat Installer.dmg`
 | Platform | macOS (Apple Silicon + Intel) |
 | Code signing | ad-hoc (`--sign -`) |
 | Bundle ID | `com.google.chat.desktop` |
+
+---
+---
+
+# 💬 Google Chat – desktopová aplikace pro macOS
+
+> Neoficiální nativní desktopová aplikace Google Chat postavená na [Electron](https://www.electronjs.org/).
+> Plnohodnotná integrace s macOS, kterou prohlížečová záložka prostě nenabídne.
+
+---
+
+## ✨ Funkce
+
+- 🔴 **Dock badge** – počet nepřečtených zpráv přímo na ikoně aplikace
+- 🔔 **Nativní notifikace** – systémová oznámení macOS (Centrum oznámení)
+- 🪟 **Single instance** – druhý pokus o spuštění jen vyvolá okno do popředí
+- 🔗 **Chytré otevírání odkazů** – externí odkazy se otevírají v prohlížeči, ne v aplikaci
+- 🌙 **Podpora Dark Mode**
+
+---
+
+## 📦 Instalace
+
+1. Stáhni `Google Chat Installer.dmg` ze sekce [Releases](../../releases)
+2. Otevři DMG a dvojklikem spusť **Instalovat Google Chat.command**
+3. V Terminálu, který se otevře, sleduj postup – aplikace se nainstaluje do `/Applications` a rovnou spustí
+
+> **💡 Tip k prvnímu spuštění:** macOS se zeptá na povolení notifikací – potvrď je, jinak badge a oznámení nebudou fungovat.
+
+---
+
+## 🔐 Proč instalátor odstraňuje quarantine?
+
+Při stažení jakéhokoli souboru z internetu macOS automaticky přiřadí tzv. **quarantine atribut** (`com.apple.quarantine`). Jde o bezpečnostní mechanismus zvaný **Gatekeeper**, který chrání uživatele před spuštěním neznámého softwaru.
+
+Aplikace distribuované mimo Mac App Store musí být buď:
+- ✅ **Podepsané Apple Developer certifikátem** (placené členství ~99 $/rok), nebo
+- ✅ **Zbavené quarantine atributu** ručně
+
+Instalátor proto spouští jediný příkaz:
+
+```bash
+xattr -cr "/Applications/Google Chat.app"
+```
+
+To je vše – odstraní quarantine příznak, nic víc. Jedná se o standardní postup pro interní firemní nástroje a open-source aplikace bez certifikátu.
+
+**🔍 Chceš si to ověřit sám?**
+
+```bash
+# Před instalací – uvidíš atribut com.apple.quarantine
+xattr -l "/Applications/Google Chat.app"
+
+# Po instalaci – atribut zmizí
+xattr -l "/Applications/Google Chat.app"
+```
+
+Celý zdrojový kód aplikace i instalátoru je dostupný v tomto repozitáři k prostudování.
+
+---
+
+## 🛠 Build ze zdrojových kódů
+
+**Potřebuješ:** Node.js 18+
+
+```bash
+git clone https://github.com/trnkapavel/google-chat-app.git
+cd google-chat-app
+npm install
+
+# Spustit vývojově
+npm start
+
+# Sestavit DMG (arm64 + x64)
+npm run build
+
+# Zabalit do instalačního DMG
+./build_dmg.sh
+```
+
+Výstup: `dist/Google Chat Installer.dmg`
+
+---
+
+## 🔧 Technické detaily
+
+| | |
+|---|---|
+| Electron | 33.x |
+| Platforma | macOS (Apple Silicon + Intel) |
+| Podpis | ad-hoc (`--sign -`) |
+| Bundle ID | `com.google.chat.desktop` |
